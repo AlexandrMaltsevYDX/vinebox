@@ -1,0 +1,27 @@
+from django.contrib import admin
+from . import models
+
+
+admin.site.register(models.attributes.Category)
+admin.site.register(models.attributes.TypeHouse)
+admin.site.register(models.attributes.WallMaterial)
+admin.site.register(models.attributes.WindowsOrientation)
+admin.site.register(models.attributes.Ownership)
+admin.site.register(models.attributes.LandCategory)
+admin.site.register(models.attributes.ReliefArea)
+admin.site.register(models.attributes.Fencing)
+admin.site.register(models.attributes.Foundation)
+admin.site.register(models.attributes.VillageFences)
+admin.site.register(models.attributes.EngineeringServices)
+admin.site.register(models.attributes.Coordinates)
+admin.site.register(models.attributes.Repair)
+admin.site.register(models.attributes.Balcony)
+admin.site.register(models.attributes.Driveways)
+admin.site.register(models.attributes.AreaOfMeasurement)
+admin.site.register(models.attributes.WindowMaterial)
+admin.site.register(models.attributes.SalesMethod)
+admin.site.register(models.attributes.Lift)
+admin.site.register(models.attributes.ApproveUsage)
+admin.site.register(models.attributes.VisibleOnSite)
+admin.site.register(models.attributes.WC)
+# admin.site.register(models.objects_re.ReObjectImage)

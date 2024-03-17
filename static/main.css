@@ -1,0 +1,27 @@
+.select2 {
+    display: none !important;
+}
+
+.select2-container {
+    display: none !important;
+}
+
+.select2-container .select2-selection--single {
+    display: none !important;
+}
+
+.select2-container--default .select2-selection--single {
+    display: none !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    display: none !important;
+}
+
+.select2-results__option {
+    display: none !important;
+}
+
+.hidden {
+    display: none;
+}

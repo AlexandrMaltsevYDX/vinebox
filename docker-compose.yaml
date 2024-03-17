@@ -1,0 +1,76 @@
+version: "3.8"
+
+services:
+  database:
+    image: postgres:15-alpine
+    ports:
+      - '5432:5432'
+    env_file:
+      - infra/postgres/.env
+    volumes:
+      - database_data:/var/lib/postgresql/data
+    networks:
+      - dashboard_networks
+
+  backend: &django
+    build:
+      context: https://github.com/AlexandrMaltsevYDX/dashboard.git#main
+      dockerfile: Dockerfile
+    env_file:
+      - infra/postgres/.env
+    environment:
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+    entrypoint: /usr/local/bin/entrypoint.sh
+    command: gunicorn --bind 0.0.0.0:8000 src.wsgi
+    expose:
+      - "8000"
+    volumes:
+      - .:/app
+      - media:/app/media
+      - static:/app/staticroot
+    networks:
+      - dashboard_networks
+
+  celery:
+    <<: *django
+    command: celery -A src worker -l DEBUG
+
+  nginx:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - media:/media
+      - static:/staticroot
+      - nginx_data:/data
+      - nginx_letsencrypt:/etc/letsencrypt
+    depends_on:
+      - backend
+    networks:
+      - dashboard_networks
+
+  redis:
+    image: 'redis:7.2.4-alpine'
+    ports:
+      - '6379:6379'
+    networks:
+      - dashboard_networks
+
+volumes:
+  media:
+    driver: local
+  static:
+    driver: local
+  database_data:
+    driver: local
+  nginx_data:
+    driver: local
+  nginx_letsencrypt:
+    driver: local
+networks:
+  dashboard_networks:
+    driver: bridge
